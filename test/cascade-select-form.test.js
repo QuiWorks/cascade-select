@@ -16,16 +16,20 @@ describe('cascadeSelectForm', () => {
 
   it('Initial setup works', async () => {
     const el = await fixture(html`
-      <cascade-select-form optional="rideType" class="flex-column" url="http://localhost:8001/" action="http://localhost:8001/" method="POST">
-        <input type="hidden" name="baseUrl" value="/dirt" />
-        <select name="year" class="custom-select"></select>
-        <select name="make" class="custom-select"></select>
-        <select name="rideType" class="custom-select"></select>
-        <select name="color" class="custom-select">
-          <option value="blue">blue</option>
-        </select>
-        <select name="model" class="custom-select"></select>
-      </cascade-select-form>
+      <cascade-form action="http://localhost:8001/" method="POST">
+        <cascade-ajax url="http://localhost:8001/">
+          <cascade-select optional="rideType" class="flex-column">
+            <input type="hidden" name="baseUrl" value="/dirt" />
+            <select name="year" class="custom-select"></select>
+            <select name="make" class="custom-select"></select>
+            <select name="rideType" class="custom-select"></select>
+            <select name="color" class="custom-select">
+              <option value="blue">blue</option>
+            </select>
+            <select name="model" class="custom-select"></select>
+          </cascade-select>
+        </cascade-ajax>
+      </cascade-form>
     `);
     //handles attributes
     expect(el.url).to.equal('http://localhost:8001/');
@@ -67,16 +71,20 @@ describe('cascadeSelectForm', () => {
 
   it('Shadow dom renders correctly', async () => {
     const el = await fixture(html`
-      <cascade-select-form optional="rideType" class="flex-column" url="http://localhost:8001/" action="http://localhost:8001/" method="POST">
-        <input type="hidden" name="baseUrl" value="/dirt" />
-        <select name="year" class="custom-select"></select>
-        <select name="make" class="custom-select"></select>
-        <select name="rideType" class="custom-select"></select>
-        <select name="color" class="custom-select">
-          <option value="blue">blue</option>
-        </select>
-        <select name="model" class="custom-select"></select>
-      </cascade-select-form>
+      <cascade-form action="http://localhost:8001/" method="POST">
+        <cascade-ajax url="http://localhost:8001/">
+          <cascade-select optional="rideType" class="flex-column">
+            <input type="hidden" name="baseUrl" value="/dirt" />
+            <select name="year" class="custom-select"></select>
+            <select name="make" class="custom-select"></select>
+            <select name="rideType" class="custom-select"></select>
+            <select name="color" class="custom-select">
+              <option value="blue">blue</option>
+            </select>
+            <select name="model" class="custom-select"></select>
+          </cascade-select
+        </cascade-ajax>
+      </cascade-form>
     `);
 
     expect(el).shadowDom.to.equal(`
@@ -93,16 +101,20 @@ describe('cascadeSelectForm', () => {
 
   it('Light dom renders correctly', async () => {
     const el = await fixture(html`
-      <cascade-select-form optional="rideType" class="flex-column" url="http://localhost:8001/" action="http://localhost:8001/" method="POST">
-        <input type="hidden" name="baseUrl" value="/dirt" />
-        <select name="year" class="custom-select"></select>
-        <select name="make" class="custom-select"></select>
-        <select name="rideType" class="custom-select"></select>
-        <select name="color" class="custom-select">
-          <option value="blue">blue</option>
-        </select>
-        <select name="model" class="custom-select"></select>
-      </cascade-select-form>
+      <cascade-form action="http://localhost:8001/" method="POST">
+        <cascade-ajax url="http://localhost:8001/">
+          <cascade-select optional="rideType" class="flex-column">
+            <input type="hidden" name="baseUrl" value="/dirt" />
+            <select name="year" class="custom-select"></select>
+            <select name="make" class="custom-select"></select>
+            <select name="rideType" class="custom-select"></select>
+            <select name="color" class="custom-select">
+              <option value="blue">blue</option>
+            </select>
+            <select name="model" class="custom-select"></select>
+          </cascade-select>
+        </cascade-ajax>
+      </cascade-form>
     `);
 
     expect(el).lightDom.to.equalSnapshot();
@@ -110,16 +122,20 @@ describe('cascadeSelectForm', () => {
 
   it('First list gets set on first load', async () => {
     const el = await fixture(html`
-      <cascade-select-form optional="rideType" class="flex-column" url="http://localhost:8001/" action="http://localhost:8001/" method="POST">
-        <input type="hidden" name="baseUrl" value="/dirt" />
-        <select name="year" class="custom-select"></select>
-        <select name="make" class="custom-select"></select>
-        <select name="rideType" class="custom-select"></select>
-        <select name="color" class="custom-select">
-          <option value="blue">blue</option>
-        </select>
-        <select name="model" class="custom-select"></select>
-      </cascade-select-form>
+      <cascade-form action="http://localhost:8001/" method="POST">
+        <cascade-ajax url="http://localhost:8001/">
+          <cascade-select optional="rideType" class="flex-column">
+            <input type="hidden" name="baseUrl" value="/dirt" />
+            <select name="year" class="custom-select"></select>
+            <select name="make" class="custom-select"></select>
+            <select name="rideType" class="custom-select"></select>
+            <select name="color" class="custom-select">
+              <option value="blue">blue</option>
+            </select>
+            <select name="model" class="custom-select"></select>
+          </cascade-select>
+        </cascade-ajax>
+      </cascade-form>
     `);
 
     await elementUpdated(el);
