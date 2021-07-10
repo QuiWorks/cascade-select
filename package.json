@@ -15,7 +15,7 @@
     "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "format": "npm run format:eslint && npm run format:prettier",
-    "test": "node ./demo/server.js & karma start --coverage",
+    "test": "node ./demo/server.js & karma start --coverage & node ./demo/shutdown.js",
     "test:watch": "node ./demo/server.js & karma start --auto-watch=true --single-run=false",
     "test:update-snapshots": "karma start --update-snapshots",
     "test:prune-snapshots": "karma start --prune-snapshots",
