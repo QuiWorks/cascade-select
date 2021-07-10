@@ -13,8 +13,8 @@ npm i
 ## Usage
 ```html
 <script type="module">
-  import 'cascade-x-form/cascade-select-form.js';
-  import 'cascade-x-form/cascade-combo-box-form.js';
+  import 'cascade-x-form/cascade-select.js';
+  import 'cascade-x-form/cascade-combo-box.js';
 </script>
 
 <cascade-select-form optional="rideType" class="flex-column" url="http://localhost:8001/" action="http://localhost:8001/" method="POST">

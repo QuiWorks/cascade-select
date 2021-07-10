@@ -1,10 +1,10 @@
 /* eslint-disable */
-import {CascadeXForm} from "./CascadeXForm.js";
+import {CascadeX} from "./CascadeX.js";
 
 /**
- * An implementation of CascadeXForm that works with <select> elements.
+ * An implementation of CascadeX that works with <select> elements.
  */
-export class CascadeSelectForm extends CascadeXForm {
+export class CascadeSelect extends CascadeX {
 
   render() {
     return super.render();

@@ -2,7 +2,7 @@
 import { html, fixture, fixtureSync, expect, elementUpdated, assert } from '@open-wc/testing';
 // import sinon from 'sinon';
 
-import '../cascade-select-form.js';
+import '../cascade-select.js';
 
 describe('cascadeSelectForm', () => {
   before(() =>{
@@ -150,7 +150,7 @@ describe('cascadeSelectForm', () => {
     //
     // let ajaxStub = sinon.stub(el._ajax, 'lastResponse').value([{name: "n1", value: "v1"},{name: "n2", value: "v2"}]);
     //
-    // // let eventSpy = sinon.spy(CascadeXForm,"_responseHandler");
+    // // let eventSpy = sinon.spy(CascadeX,"_responseHandler");
     // let elSpy = sinon.spy(el,"getInputNodeName");
     //
     // console.log(el.querySelector('select[name=year]').children.length);

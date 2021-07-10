@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit-element';
+import {html, LitElement } from 'lit-element';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
@@ -38,48 +38,18 @@ import '@polymer/paper-spinner/paper-spinner-lite.js';
  getListValue(listElement)
 
  */
-export class CascadeXForm extends LitElement {
-  static get styles() {
-    return css`
-      :host(.flex-column) form{
-        display:flex;
-        flex-direction:column;
-        align-items: center;
-      }
-      :host(.flex-row) form{
-        display:flex;
-        flex-direction:row;
-        justify-content: center;
-      }
-      iron-form {
-        width: 100%;
-      }
-      form {
-        display: flex;
-        flex-direction: row;
-      }
-      ::slotted(select) {
-        margin-bottom: var(--app-margin-bottom, 0.75rem);
-      }
-    `;
-  }
+export class CascadeX extends LitElement {
 
   render() {
     return html`
-      <iron-form allow-redirect>
-        <form action="${this.action}" method="${this.method}">
-          <slot></slot>
-        </form>
-      </iron-form>
-      <paper-spinner-lite class="blue"></paper-spinner-lite>
+      <div>
+        <slot></slot>
+      </div>
     `;
   }
 
   static get properties() {
     return {
-      action: { type: String },
-      method: { type: String },
-      url: { type: String },
       lists: { type: Array },
       placeHolderName: { type: String, attribute: 'place-holder-name' },
       placeHolderValue: { type: String, attribute: 'place-holder-value' },
@@ -89,9 +59,6 @@ export class CascadeXForm extends LitElement {
 
   constructor() {
     super();
-    this.url = '';
-    this.action = '';
-    this.method = 'GET';
     this.placeHolderName = '';
     this.placeHolderValue = '-1';
     this.listParamName = 'type';
@@ -101,9 +68,6 @@ export class CascadeXForm extends LitElement {
 
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
-    this._form = this.shadowRoot.querySelector('iron-form');
-    this._spinner = this.shadowRoot.querySelector('paper-spinner-lite');
-    this._setSpinner();
     this._processNodes();
     this.resetLists();
     this.requestData();
@@ -289,23 +253,29 @@ export class CascadeXForm extends LitElement {
       this.enableList(nextList.element);
       this.requestData();
     } else {
-      this.submitForm();
+      this.submit();
     }
   }
 
-  /**
-   * Submits the form
-   */
-  submitForm() {
+  enableLists()
+  {
     this.lists.forEach(l => {
       this.enableList(l.element);
     });
-    this._form.submit();
+  }
+
+  disableLists()
+  {
     this.lists.forEach(l => {
       this.disableList(l.element);
     });
-    this._spinner.active = true;
-    this._spinner.style.display = 'block';
+  }
+
+  /**
+   * Dispatches a submit event.
+   */
+  submit() {
+    this.dispatchEvent(new CustomEvent("cascade-select-submit", {detail : {}, bubbles: true, composed: true}));
   }
 
   /**
@@ -356,13 +326,4 @@ export class CascadeXForm extends LitElement {
     return { name: this.placeHolderName, value: this.placeHolderValue };
   }
 
-  /**
-   * Initializes the loading spinner.
-   * @private
-   */
-  _setSpinner(){
-    this._spinner.style.top = `-${(this._form.offsetHeight / 2) + (this._spinner.offsetHeight / 2)}px`;
-    this._spinner.style.left = `${(this._form.offsetWidth / 2) - (this._spinner.offsetHeight / 2)}px`;
-    this._spinner.style.display = 'none';
-  }
 }
