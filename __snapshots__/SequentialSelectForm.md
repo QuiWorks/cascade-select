@@ -1,4 +1,4 @@
-# `CascadeSelectForm`
+# `CascadeSelect`
 
 #### `Light dom renders correctly`
 

@@ -1,10 +1,10 @@
 /* eslint-disable */
-import {CascadeXForm} from "./CascadeXForm.js";
+import {CascadeX} from "./CascadeX.js";
 
 /**
- * An implementation of CascadeXForm that works with <vaadin-combo-box> elements.
+ * An implementation of CascadeX that works with <vaadin-combo-box> elements.
  */
-export class CascadeComboBoxForm extends CascadeXForm {
+export class CascadeComboBox extends CascadeX {
 
   render() {
     return super.render();

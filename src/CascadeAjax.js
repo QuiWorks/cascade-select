@@ -2,7 +2,7 @@ import {html, LitElement} from 'lit-element';
 import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import './CascadeXForm.js';
+import './CascadeX.js';
 
 export class CascadeAjax extends LitElement {
 
@@ -39,7 +39,7 @@ export class CascadeAjax extends LitElement {
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     this._ajax = this.shadowRoot.querySelector('iron-ajax');
-    this.cascadeXForms = [...this.shadowRoot.querySelector(".cascade-ajax-container")
+    this.cascadeXs = [...this.shadowRoot.querySelector(".cascade-ajax-container")
       .querySelector("slot")
       .assignedElements()];
     this.requestData();
@@ -59,6 +59,6 @@ export class CascadeAjax extends LitElement {
    */
   _responseHandler() {
     const response = this._ajax.lastResponse;
-    this.cascadeXForms.forEach(c => c.setList(response));
+    this.cascadeXs.forEach(c => c.setList(response));
   }
 }

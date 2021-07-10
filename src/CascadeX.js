@@ -38,7 +38,7 @@ import '@polymer/paper-spinner/paper-spinner-lite.js';
  getListValue(listElement)
 
  */
-export class CascadeXForm extends LitElement {
+export class CascadeX extends LitElement {
 
   render() {
     return html`
