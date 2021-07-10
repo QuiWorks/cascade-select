@@ -66,13 +66,6 @@ export class CascadeXForm extends LitElement {
 
   render() {
     return html`
-      <iron-ajax
-        url="${this.url}"
-        headers='{"X-Requested-With": "XMLHttpRequest"}'
-        handle-as="json"
-        @iron-ajax-response="${this._responseHandler}"
-      >
-      </iron-ajax>
       <iron-form allow-redirect>
         <form action="${this.action}" method="${this.method}">
           <slot></slot>
@@ -109,7 +102,6 @@ export class CascadeXForm extends LitElement {
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     this._form = this.shadowRoot.querySelector('iron-form');
-    this._ajax = this.shadowRoot.querySelector('iron-ajax');
     this._spinner = this.shadowRoot.querySelector('paper-spinner-lite');
     this._setSpinner();
     this._processNodes();
@@ -201,15 +193,14 @@ export class CascadeXForm extends LitElement {
    * Requests data from the server.
    */
   requestData() {
-    this._setRequestParameters();
-    this._ajax.generateRequest();
+    this.dispatchEvent(new CustomEvent("cascade-select-request", {detail: this.getRequestParameters(), bubbles: true, composed: true}));
   }
 
   /**
-   * Sets the request parameters for the ajax call.
+   * Gets the request parameters for the request event.
    * @private
    */
-  _setRequestParameters() {
+  getRequestParameters() {
     const params = {};
     params[this.listParamName] = this._findActiveList().name;
     this.lists.forEach(l => {
@@ -218,24 +209,23 @@ export class CascadeXForm extends LitElement {
     this.parameters.forEach(p => {
       params[p.name] = p.value;
     });
-    this._ajax.params = params;
+    return params;
   }
 
   /**
-   * Handles the server response
-   * @private
+   * Sets the next list.
+   * @public
    */
-  _responseHandler() {
-    const response = this._ajax.lastResponse;
+  setList(list) {
     const l = this._findActiveList();
-    if (response.length === 0) {
+    if (list.length === 0) {
       this.disableList(l.element);
       this._activateNextList(l);
-    } else if (response.length === 1) {
-      this.addOptions(response);
+    } else if (list.length === 1) {
+      this.addOptions(list);
     } else {
       this._resetList(l);
-      this.addOptions(response);
+      this.addOptions(list);
     }
   }
 
