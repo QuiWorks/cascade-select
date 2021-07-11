@@ -1,7 +1,7 @@
 {
-  "name": "cascade-x-form",
+  "name": "cascade-select",
   "version": "0.0.1",
-  "description": "Webcomponent cascade-x-form following open-wc recommendations",
+  "description": "A cascading group of select components.",
   "author": "Eric Pederson",
   "license": "MIT",
   "main": "index.js",
