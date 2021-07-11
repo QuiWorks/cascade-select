@@ -52,6 +52,7 @@ export class CascadeForm extends LitElement {
     super();
     this.action = '';
     this.method = 'GET';
+    this.addEventListener("cascade-select-submit", this._handleSubmitEvent.bind(this));
   }
 
   firstUpdated(changedProperties) {
@@ -59,21 +60,24 @@ export class CascadeForm extends LitElement {
     this._form = this.shadowRoot.querySelector('iron-form');
     this._spinner = this.shadowRoot.querySelector('paper-spinner-lite');
     this._setSpinner();
-    this.addEventListener("cascade-select-submit", this._handleSubmitEvent.bind(this));
-  }
-
-  _handleSubmitEvent()
-  {
-    this.submitForm();
   }
 
   /**
-   * Submits the form
+   * Submits the form.
    */
   submitForm() {
     this._form.submit();
     this._spinner.active = true;
     this._spinner.style.display = 'block';
+  }
+
+  /**
+   * Handles the cascade-select-submit event.
+   * @private
+   */
+  _handleSubmitEvent()
+  {
+    this.submitForm();
   }
 
   /**

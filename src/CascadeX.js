@@ -74,6 +74,97 @@ export class CascadeX extends LitElement {
   }
 
   /**
+   * Resets all lists to their default state.
+   */
+  resetLists() {
+    this.lists.forEach(l => {
+      const { element } = l;
+      if (l.editable) {
+        this._resetList(l);
+        element.removeEventListener(
+          this.getInputChangeEventName(),
+          this._handleListChange.bind(this),
+        );
+        element.addEventListener(
+          this.getInputChangeEventName(),
+          this._handleListChange.bind(this),
+        );
+      } else {
+        this.setPlaceHolder(l);
+        this.selectFirstOption(element);
+        this.disableList(element);
+      }
+    });
+  }
+
+  /**
+   * Requests data from the server.
+   */
+  requestData() {
+    this.dispatchEvent(new CustomEvent("cascade-select-request", {detail: this.getRequestParameters(), bubbles: true, composed: true}));
+  }
+
+  /**
+   * Dispatches a submit event.
+   */
+  submit() {
+    this.dispatchEvent(new CustomEvent("cascade-select-submit", {detail : {}, bubbles: true, composed: true}));
+  }
+
+  /**
+   * Enables all lists.
+   */
+  enableLists()
+  {
+    this.lists.forEach(l => {
+      this.enableList(l.element);
+    });
+  }
+
+  /**
+   * Disables all lists.
+   */
+  disableLists()
+  {
+    this.lists.forEach(l => {
+      this.disableList(l.element);
+    });
+  }
+
+  /**
+   * Gets the request parameters for the request event.
+   * @private
+   */
+  getRequestParameters() {
+    const params = {};
+    params[this.listParamName] = this._findActiveList().name;
+    this.lists.forEach(l => {
+      params[l.name] = l.element.value;
+    });
+    this.parameters.forEach(p => {
+      params[p.name] = p.value;
+    });
+    return params;
+  }
+
+  /**
+   * Adds the passed in array of values as options for the next list.
+   * @public
+   */
+  setList(list) {
+    const l = this._findActiveList();
+    if (list.length === 0) {
+      this.disableList(l.element);
+      this._activateNextList(l);
+    } else if (list.length === 1) {
+      this.addOptions(list);
+    } else {
+      this._resetList(l);
+      this.addOptions(list);
+    }
+  }
+
+  /**
    * Process all the child nodes added to this components slot.
    * @private
    */
@@ -87,7 +178,7 @@ export class CascadeX extends LitElement {
   /**
    * Processes the nodes provided as children to this element.
    * All nodes that match a name defined by the implementation class
-   * are added to the arrary of input lists.
+   * are added to the array of input lists.
    * All nodes that are hidden inputs will be query parameters for the ajax calls.
    * @param node a child element
    * @private
@@ -127,70 +218,6 @@ export class CascadeX extends LitElement {
       active: this.lists.length === 0,
       editable: this.isEditable(list),
     });
-  }
-
-  /**
-   * Resets all lists to their default state.
-   */
-  resetLists() {
-    this.lists.forEach(l => {
-      const { element } = l;
-      if (l.editable) {
-        this._resetList(l);
-        element.removeEventListener(
-          this.getInputChangeEventName(),
-          this._handleListChange.bind(this),
-        );
-        element.addEventListener(
-          this.getInputChangeEventName(),
-          this._handleListChange.bind(this),
-        );
-      } else {
-        this.setPlaceHolder(l);
-        this.selectFirstOption(element);
-        this.disableList(element);
-      }
-    });
-  }
-
-  /**
-   * Requests data from the server.
-   */
-  requestData() {
-    this.dispatchEvent(new CustomEvent("cascade-select-request", {detail: this.getRequestParameters(), bubbles: true, composed: true}));
-  }
-
-  /**
-   * Gets the request parameters for the request event.
-   * @private
-   */
-  getRequestParameters() {
-    const params = {};
-    params[this.listParamName] = this._findActiveList().name;
-    this.lists.forEach(l => {
-      params[l.name] = l.element.value;
-    });
-    this.parameters.forEach(p => {
-      params[p.name] = p.value;
-    });
-    return params;
-  }
-
-  /**
-   * Sets the next list.
-   * @public
-   */
-  setList(list) {
-    const l = this._findActiveList();
-    if (list.length === 0) {
-      this.disableList(l.element);
-      this._activateNextList(l);
-    } else if (list.length === 1) {
-      this.addOptions(list);
-    } else {
-      this._resetList(l);
-      this.addOptions(list);
-    }
   }
 
   /**
@@ -255,27 +282,6 @@ export class CascadeX extends LitElement {
     } else {
       this.submit();
     }
-  }
-
-  enableLists()
-  {
-    this.lists.forEach(l => {
-      this.enableList(l.element);
-    });
-  }
-
-  disableLists()
-  {
-    this.lists.forEach(l => {
-      this.disableList(l.element);
-    });
-  }
-
-  /**
-   * Dispatches a submit event.
-   */
-  submit() {
-    this.dispatchEvent(new CustomEvent("cascade-select-submit", {detail : {}, bubbles: true, composed: true}));
   }
 
   /**

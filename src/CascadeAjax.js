@@ -4,6 +4,10 @@ import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 import './CascadeX.js';
 
+/**
+ * An ajax element that handles the
+ * cascade-select-request event by making an XHR request to a server.
+ */
 export class CascadeAjax extends LitElement {
 
   render() {
@@ -22,6 +26,9 @@ export class CascadeAjax extends LitElement {
 
   static get properties() {
     return {
+      /**
+       * The URL to the server.
+       */
       url: {type: String},
     };
   }
@@ -32,9 +39,6 @@ export class CascadeAjax extends LitElement {
     this.addEventListener("cascade-select-request", this._requestEventHandler.bind(this));
   }
 
-  _requestEventHandler(e) {
-    this.requestData(e.detail);
-  }
 
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
@@ -54,7 +58,17 @@ export class CascadeAjax extends LitElement {
   }
 
   /**
-   * Handles the server response
+   * Handles to cascade-select-request event.
+   * @param e the cascade-select-request event.
+   * @private
+   */
+  _requestEventHandler(e) {
+    e.preventDefault();
+    this.requestData(e.detail);
+  }
+
+  /**
+   * Handles the server response.
    * @private
    */
   _responseHandler() {
