@@ -1,7 +1,11 @@
-# \<cascading-select-list>
+# EJP Cascading Select
 
-This is a form that Makes ajax request to a server to populate values of a select list style component cascade. 
-It is used as a form where one select list style component's values rely on the value of the preceding select list style component.
+A suite of components that can be used to create a cascading group of select inputs in which
+the options for next list depend on the previous list's selected value.
+
+The base functionality of any cascade component implementation is to throw events.
+The cascade-ajax is used to handle request events by making XHR requests to a server.
+The cascade-form is used to handle submission events by submitting an HTML form.
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 

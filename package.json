@@ -1,6 +1,6 @@
 {
-  "name": "cascade-select",
-  "version": "0.0.1",
+  "name": "ejp-cascade-select",
+  "version": "1.0.1",
   "description": "A cascading group of select components.",
   "author": "Eric Pederson",
   "license": "MIT",
@@ -68,8 +68,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "publishConfig": {
-    "registry": "http://redstone:8081/nexus/repository/npm-private/"
   }
 }
