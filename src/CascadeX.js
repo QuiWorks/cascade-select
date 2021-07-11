@@ -3,6 +3,20 @@ import '@polymer/iron-ajax/iron-ajax.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
 
+/**
+ * Default values for a List object.
+ * Used as a null object for the List class.
+ * @returns {{editable: boolean, name: string, index: number, element: null}}
+ */
+function getDefaultList() {
+  return {
+    index: -1,
+    name: "",
+    element: null,
+    editable: false,
+  };
+}
+
 /**---------------------------------------------
  * EXTEND THIS CLASS AND IMPLEMENT THESE METHODS
  * ---------------------------------------------
@@ -64,6 +78,7 @@ export class CascadeX extends LitElement {
     this.listParamName = 'type';
     this.lists = [];
     this.parameters = [];
+    this.activeList = getDefaultList();
   }
 
   firstUpdated(changedProperties) {
@@ -211,13 +226,14 @@ export class CascadeX extends LitElement {
    * @private
    */
   _addToLists(list) {
-    this.lists.push({
+    const listObj = {
       index: this.lists.length,
       name: list.getAttribute('name'),
       element: list,
-      active: this.lists.length === 0,
       editable: this.isEditable(list),
-    });
+    };
+    if(this.lists.length === 0) this.activeList = listObj;
+    this.lists.push(listObj);
   }
 
   /**
@@ -227,7 +243,7 @@ export class CascadeX extends LitElement {
    */
   _resetList(list) {
     const { element } = list;
-    const { active } = list;
+    const active = this._isActiveList(list);
     this.clearOptions(list);
     this.setPlaceHolder(list);
     this.selectFirstOption(element);
@@ -256,11 +272,8 @@ export class CascadeX extends LitElement {
   _cascadeReset(list) {
     const { index } = list;
     this.lists
-      .filter(l => {
-        return l.index > index && l.editable;
-      })
+      .filter(l => l.index > index && l.editable)
       .forEach(l => {
-        l.active = false;
         this._resetList(l);
       });
   }
@@ -273,10 +286,10 @@ export class CascadeX extends LitElement {
   _activateNextList(list) {
     const nextIndex = list.index + 1;
     if (this.lists.length > nextIndex) {
-      list.active = false;
+      this._clearActiveList();
       this._cascadeReset(list);
       const nextList = this._findNextEditableListByIndex(list.index);
-      nextList.active = true;
+      this._setActiveList(nextList);
       this.enableList(nextList.element);
       this.requestData();
     } else {
@@ -285,12 +298,42 @@ export class CascadeX extends LitElement {
   }
 
   /**
+   * Set the active list to its default value.
+   * @private
+   */
+  _clearActiveList()
+  {
+    this.activeList = getDefaultList();
+  }
+
+  /**
+   * Set the passed list as active.
+   * @param list a list object.
+   * @private
+   */
+  _setActiveList(list)
+  {
+    this.activeList = list;
+  }
+
+  /**
+   * Check to see if passed list is the active list.
+   * @param list a list object.
+   * @returns {boolean}
+   * @private
+   */
+  _isActiveList(list)
+  {
+    return this.activeList.name === list.name;
+  }
+
+  /**
    * Finds the current active list
    * @returns the active list
    * @private
    */
   _findActiveList() {
-    return this._findList(l => l.active);
+    return this._findList(l => this._isActiveList(l));
   }
 
   /**
